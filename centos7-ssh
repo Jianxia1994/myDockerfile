@@ -1,0 +1,15 @@
+
+FROM centos7
+
+MAINTAINER hanzhen "hanzhenjx@163.com"
+
+RUN rm -fr /etc/yum.repos.d/*
+COPY ./CentOS-Base.repo /etc/yum.repos.d/
+COPY ./CentOS-Epel.repo /etc/yum.repos.d/
+RUN yum install -y -q openssh-server
+RUN echo 'hanzhen' | passwd --stdin root
+RUN ssh-keygen -t rsa -f /etc/ssh/ssh_host_rsa_key
+RUN ssh-keygen -t ecdsa -f /etc/ssh/ssh_host_ecdsa_key
+RUN ssh-keygen -t ed25519 -f /etc/ssh/ssh_host_ed25519_key
+EXPOSE 22
+CMD /usr/sbin/sshd -D
